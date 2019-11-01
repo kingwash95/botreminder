@@ -5,7 +5,7 @@ target/
 !**/src/test/**
 mvnw.cmd
 mvnw
-
+.gitattributes
 ### STS ###
 .apt_generated
 .classpath
