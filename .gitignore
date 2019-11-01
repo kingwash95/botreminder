@@ -1,6 +1,6 @@
 HELP.md
 target/
-.mvn/*
+*.mvn/*
 !**/src/main/**
 !**/src/test/**
 
@@ -31,6 +31,6 @@ build/
 .vscode/
 
 
-mvnw.cmd
-mvnw
-.gitattributes
+*mvnw.cmd
+*mvnw
+*.gitattributes
