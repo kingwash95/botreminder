@@ -20,16 +20,17 @@ public class Records {
     @Column(name = "text")
     private String text;
 
-    @Column(name = "timeline")
+    @Column(name="timeline")
     private String time;
+
 
     public Records() { }
 
-    public Records(Long chatId, Date date, String time, String text) {
+    public Records(Long chatId, Date date, String text, String time) {
         this.chatId = chatId;
         this.date = date;
         this.text = text;
-        this.time = time;
+        this.time= time;
     }
 
     public Long getChatId() {
@@ -59,5 +60,4 @@ public class Records {
     public String getTime() { return time; }
 
     public void setTime(String time) { this.time = time; }
-
 }

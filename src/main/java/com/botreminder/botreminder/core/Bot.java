@@ -102,8 +102,9 @@ public class Bot extends TelegramLongPollingBot {
         //sendMessage(stringData + " " + stringReminder);
         Date dateSql = getDate(stringData);
         //Create a new record in the database
-        Records records = new Records(chatId, dateSql, stringTime, stringReminder);
+        Records records = new Records(chatId, dateSql, stringReminder, stringTime );
         recordsService.createRecords(records);
+        sendMessage("Ваше напоминание создано");
     }
 
     //Method that converts a string with a date of a reminder to the sql format
