@@ -21,14 +21,13 @@ public class RecordsService {
         this.recordsRepository = recordsRepository;
     }
 
+    //Method that creates records in the database
     public void createRecords (Records records){
         logger.info("records creating");
         recordsRepository.save(records);
     }
-    public void deleteRecords (Records records){
-        recordsRepository.delete(records);
-    }
 
+    //Method that finds records that match the entered date
     public List<Records> findAllByDate (Date date){
         return recordsRepository.findAllByDate(date);
     }

@@ -5,7 +5,7 @@ import java.sql.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "records" )
+@Table(name = "records")
 public class Records {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,12 +20,16 @@ public class Records {
     @Column(name = "text")
     private String text;
 
-    public Records (){}
+    @Column(name = "timeline")
+    private String time;
 
-    public Records (Long chatId, Date date, String text){
+    public Records() { }
+
+    public Records(Long chatId, Date date, String time, String text) {
         this.chatId = chatId;
         this.date = date;
         this.text = text;
+        this.time = time;
     }
 
     public Long getChatId() {
@@ -52,9 +56,8 @@ public class Records {
         this.text = text;
     }
 
+    public String getTime() { return time; }
 
-
-
-
+    public void setTime(String time) { this.time = time; }
 
 }

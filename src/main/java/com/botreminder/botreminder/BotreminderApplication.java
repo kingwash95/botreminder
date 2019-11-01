@@ -8,10 +8,10 @@ import org.telegram.telegrambots.ApiContextInitializer;
 public class BotreminderApplication {
 
 
-	public static void main(String[] args) {
-		ApiContextInitializer.init();
-		SpringApplication.run(BotreminderApplication.class, args);
+    public static void main(String[] args) {
+        ApiContextInitializer.init();
+        SpringApplication.run(BotreminderApplication.class, args);
 
-	}
+    }
 
 }

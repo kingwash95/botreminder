@@ -8,7 +8,8 @@ import java.sql.Date;
 import java.util.List;
 
 @Repository
-public interface RecordsRepository extends JpaRepository <Records, Long> {
-    List<Records> findAllByDate (Date date);
+public interface RecordsRepository extends JpaRepository<Records, Long> {
+
+    List<Records> findAllByDate(Date date);
 
 }
