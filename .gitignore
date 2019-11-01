@@ -18,7 +18,9 @@ target/
 *.iws
 *.iml
 *.ipr
-
+mvnw.cmd
+mvnw
+*.gitattributes
 ### NetBeans ###
 /nbproject/private/
 /nbbuild/
@@ -31,6 +33,6 @@ build/
 .vscode/
 
 
-*mvnw.cmd
-*mvnw
-*.gitattributes
+
+
+
