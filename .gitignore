@@ -3,7 +3,9 @@ target/
 *.mvn/*
 !**/src/main/**
 !**/src/test/**
-
+mvnw.cmd
+mvnw
+.gitattributes
 ### STS ###
 .apt_generated
 .classpath
@@ -18,9 +20,7 @@ target/
 *.iws
 *.iml
 *.ipr
-mvnw.cmd
-mvnw
-*.gitattributes
+
 ### NetBeans ###
 /nbproject/private/
 /nbbuild/
