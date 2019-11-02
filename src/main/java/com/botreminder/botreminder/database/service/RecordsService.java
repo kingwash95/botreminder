@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.List;
 
 @Service
@@ -28,8 +29,11 @@ public class RecordsService {
     }
 
     //Method that finds records that match the entered date
-    public List<Records> findAllByDate (Date date){
+    public List<Records> findAllByDate (Timestamp date){
         return recordsRepository.findAllByDate(date);
     }
+
+    //Method that finds records where field notified is null
+    public List<Records> findAllByNotifiedIsNull() { return recordsRepository.findAllByNotifiedIsNull(); }
 
 }

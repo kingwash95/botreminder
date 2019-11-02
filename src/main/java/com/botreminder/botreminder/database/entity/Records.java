@@ -2,6 +2,7 @@ package com.botreminder.botreminder.database.entity;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.List;
 
 @Entity
@@ -15,22 +16,21 @@ public class Records {
     private Long chatId;
 
     @Column(name = "date")
-    private Date date;
+    private Timestamp date;
 
     @Column(name = "text")
     private String text;
 
-    @Column(name="timeline")
-    private String time;
+    @Column(name="notified")
+    private String notified;
 
 
     public Records() { }
 
-    public Records(Long chatId, Date date, String text, String time) {
+    public Records(Long chatId, Timestamp date, String text) {
         this.chatId = chatId;
         this.date = date;
         this.text = text;
-        this.time= time;
     }
 
     public Long getChatId() {
@@ -41,11 +41,11 @@ public class Records {
         this.chatId = chatId;
     }
 
-    public Date getDate() {
+    public Timestamp getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(Timestamp date) {
         this.date = date;
     }
 
@@ -57,7 +57,7 @@ public class Records {
         this.text = text;
     }
 
-    public String getTime() { return time; }
+    public String getNotified() { return notified; }
 
-    public void setTime(String time) { this.time = time; }
+    public void setNotified(String notified) { this.notified = notified; }
 }

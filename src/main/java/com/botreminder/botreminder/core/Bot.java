@@ -20,6 +20,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;
 
 import javax.annotation.PostConstruct;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -47,7 +48,6 @@ public class Bot extends TelegramLongPollingBot {
     private int key = 0;
     private String stringData;
     private String stringReminder;
-    private String stringTime;
     private static final Logger logger = LoggerFactory.getLogger(Bot.class);
 
 
@@ -78,6 +78,11 @@ public class Bot extends TelegramLongPollingBot {
         inText = update.getMessage().getText();
         if (key == 1) {
             toDataBase(inText);
+            try {
+                sendReminderMessage();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
         }
         commandDate(inText);
 
@@ -86,7 +91,7 @@ public class Bot extends TelegramLongPollingBot {
     //Handler method for incoming commands
     public void commandDate(String inText) {
         if (inText.contains("/add")) {
-            sendMessage("Введите дату в формате ДД-ММ-ГГГГ, время в формате ЧЧ:ММ и текст напоминания по следующему примеру:'22-08-2019, 14:30, купить хлеб");
+            sendMessage("Введите дату в формате ДД-ММ-ГГГГ, время в формате ЧЧ:ММ и текст напоминания по следующему примеру:'22-08-2019 14:30, купить хлеб");
             key = 1;
         }
     }
@@ -97,30 +102,32 @@ public class Bot extends TelegramLongPollingBot {
         //We divide the incoming message into components for entering into the database
         String[] parts = inText.split(", ");
         stringData = parts[0];
-        stringTime = parts[1];
-        stringReminder = parts[2];
+        stringReminder = parts[1];
         //sendMessage(stringData + " " + stringReminder);
-        Date dateSql = getDate(stringData);
+        Timestamp dateSql = getDate(stringData);
         //Create a new record in the database
-        Records records = new Records(chatId, dateSql, stringReminder, stringTime );
+        Records records = new Records(chatId, dateSql, stringReminder);
         recordsService.createRecords(records);
         sendMessage("Ваше напоминание создано");
     }
 
     //Method that converts a string with a date of a reminder to the sql format
-    public Date getDate(String stringData) {
-        Date dateSql = null;
+    public Timestamp getDate(String stringData) {
+        Timestamp dateSql = null;
         try {
             //data in form is in this format
-            DateFormat dF = new SimpleDateFormat("dd-MM-yyyy");
+            DateFormat dF = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+            logger.info("stringData is " + stringData);
             // string data is converted into java util date
-            java.util.Date datejava = dF.parse(stringData);
-            //converted date is reformatted for conversion to sql.date
-            DateFormat dFsql = new SimpleDateFormat("yyyy-MM-dd");
-            // java util date is converted to compatible java sql date
+            java.util.Date datejava = dF.parse(stringData+":00");
+            logger.info("dateJava is " + datejava);
+            //converted date is reformatted for conversion to sql.timestamp
+            DateFormat dFsql = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            // java util date is converted to compatible java sql timestamp
             String ndt = dFsql.format(datejava);
-            // finally data from the form is converted to java sql. date for placing in database
-            dateSql = Date.valueOf(ndt);
+            logger.info("ndt is " + ndt);
+            // finally data from the form is converted to java sql. timestamp for placing in database
+            dateSql = Timestamp.valueOf(ndt);
 
         } catch (ParseException e) {
             e.printStackTrace();
@@ -145,20 +152,13 @@ public class Bot extends TelegramLongPollingBot {
         }
     }
 
-    //The method, which runs every day at midnight, finds reminders for today and sends a message to the user who created the reminder at the user's time
-    @Scheduled(cron = "0 0 0 * * ?")
     public void sendReminderMessage() throws ParseException {
-        java.util.Date dateJava = new java.util.Date();
-        DateFormat dFsql = new SimpleDateFormat("yyyy-MM-dd");
-        String ndt = dFsql.format(dateJava);
-        java.sql.Date dateSql = java.sql.Date.valueOf(ndt);
-        List<Records> records = recordsService.findAllByDate(dateSql);
+        List<Records> records = recordsService.findAllByNotifiedIsNull();
         for (Records record : records) {
-            Date dateSqL = record.getDate();
+            Timestamp dateSqL = record.getDate();
             String stringDateSqL = String.valueOf(dateSqL);
-            String time = record.getTime();
-            DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-            java.util.Date date = dateFormatter.parse(stringDateSqL + " " + time);
+            DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            java.util.Date date = dateFormatter.parse(stringDateSqL);
             TimerTask tt = new TimerTask() {
                 @Override
                 public void run() {
@@ -177,7 +177,7 @@ public class Bot extends TelegramLongPollingBot {
             };
             Timer timer = new Timer();
             timer.schedule(tt, date);
-
+            record.setNotified("notified");
         }
     }
 
