@@ -12,13 +12,13 @@ import java.util.List;
 public interface RecordsRepository extends JpaRepository<Records, Long> {
 
     List<Records> findAllByDate(Timestamp date);
-    List<Records> findAllByNotifiedIsNull();
-    List<Records> findAllByNotifiedIsNullAndChatIdIs(long chatId);
 
 
 
-    @Query(value = "update  records  set notified ='notified' where chatid =?1 and date=?2 and text =?3", nativeQuery = true)
-    void updateNotifiedField(long chatId, Timestamp date, String text);
+
+
+    @Query(value = "select * from records where chatid =?1 and date>current_timestamp", nativeQuery = true)
+    List<Records> findRecordsForNotifications(long chatId);
 
 
 }

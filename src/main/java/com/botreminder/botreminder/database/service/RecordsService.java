@@ -28,16 +28,13 @@ public class RecordsService {
 
     //Method that finds records that match the entered date
     public List<Records> findAllByDate (Timestamp date){
+
         return recordsRepository.findAllByDate(date);
     }
 
-    //Method that finds records where field notified is null
-    public List<Records> findAllByNotifiedIsNull() { return recordsRepository.findAllByNotifiedIsNull(); }
 
-
-    //Method that finds records where field chatid equals chatid
-    public List<Records> findAllByNotifiedIsNullAndChatIdIs(long chatId) { return recordsRepository.findAllByNotifiedIsNullAndChatIdIs(chatId); }
-
-    public void updateNotifiedField(long chatId, Timestamp date, String text){ recordsRepository.updateNotifiedField(chatId, date, text); }
+    //Method that finds records by chatid and data>current data
+    public List<Records> findRecordsForNotifications(long chatId){
+        return recordsRepository.findRecordsForNotifications(chatId);}
 
 }

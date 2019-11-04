@@ -76,12 +76,12 @@ public class Bot extends TelegramLongPollingBot {
         //Retrieving the text of the incoming message
         inText = update.getMessage().getText();
         if (key == 1) {
-            toDataBase(inText);
             try {
-                sendReminderMessage();
+                toDataBase(inText);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
+
         }
         commandDate(inText);
 
@@ -99,7 +99,7 @@ public class Bot extends TelegramLongPollingBot {
     }
 
     //A method that adds data from an incoming message to the database
-    public void toDataBase(String inText) {
+    public void toDataBase(String inText) throws ParseException {
         key = 0;
         //We divide the incoming message into components for entering into the database
         String[] parts = inText.split(", ");
@@ -109,6 +109,7 @@ public class Bot extends TelegramLongPollingBot {
         //Create a new record in the database
         Records records = new Records(chatId, dateSql, stringReminder);
         recordsService.createRecords(records);
+        sendReminderMessage(chatId, dateSql, stringReminder);
         sendMessage("Ваше напоминание создано");
     }
 
@@ -154,39 +155,34 @@ public class Bot extends TelegramLongPollingBot {
     }
 
     //Method that sends remind messages
-    public void sendReminderMessage() throws ParseException {
-        List<Records> records = recordsService.findAllByNotifiedIsNull();
-        for (Records record : records) {
-            Timestamp dateSqL = record.getDate();
-            String stringDateSqL = String.valueOf(dateSqL);
+    public void sendReminderMessage(long chatId, Timestamp dateSql, String stringReminder) throws ParseException {
+
+            String stringDateSqL = String.valueOf(dateSql);
             DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             java.util.Date date = dateFormatter.parse(stringDateSqL);
             TimerTask tt = new TimerTask() {
                 @Override
                 public void run() {
-                    long chatId = record.getChatId();
-                    String text = record.getText();
-                    Timestamp date = record.getDate();
                     try {
                         SendMessage outMessage = new SendMessage();
                         outMessage.setChatId(chatId);
-                        outMessage.setText(text);
+                        outMessage.setText(stringReminder);
                         execute(outMessage);
                     } catch (TelegramApiException e) {
                         e.printStackTrace();
                     }
-                    recordsService.updateNotifiedField(chatId, date, text);
+
                 }
             };
             Timer timer = new Timer();
             timer.schedule(tt, date);
-        }
     }
+
 
     //Method that shows all records of user
     public void showRecordsOfUser(long chatId){
         String shows = "Список ваших напоминаний: \n";
-        List<Records> records = recordsService.findAllByNotifiedIsNullAndChatIdIs(chatId);
+        List<Records> records = recordsService.findRecordsForNotifications(chatId);
         if(records!=null && !records.isEmpty()) {
             for (Records record : records) {
                 Timestamp dateSqL = record.getDate();

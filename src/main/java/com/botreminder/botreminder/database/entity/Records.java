@@ -19,8 +19,6 @@ public class Records {
     @Column(name = "text")
     private String text;
 
-    @Column(name="notified")
-    private String notified;
 
 
     public Records() { }
@@ -59,7 +57,4 @@ public class Records {
         this.text = text;
     }
 
-    public String getNotified() { return notified; }
-
-    public void setNotified(String notified) { this.notified = notified; }
 }
