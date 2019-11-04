@@ -1,6 +1,7 @@
 package com.botreminder.botreminder.core;
 
 import com.botreminder.botreminder.database.entity.Records;
+import com.botreminder.botreminder.database.repository.RecordsRepository;
 import com.botreminder.botreminder.database.service.RecordsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
@@ -19,7 +19,6 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;
 
 import javax.annotation.PostConstruct;
-import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -94,6 +93,9 @@ public class Bot extends TelegramLongPollingBot {
             sendMessage("Введите дату в формате ДД-ММ-ГГГГ, время в формате ЧЧ:ММ и текст напоминания по следующему примеру:'22-08-2019 14:30, купить хлеб");
             key = 1;
         }
+        else if(inText.contains("/show")){
+            showRecordsOfUser(chatId);
+        }
     }
 
     //A method that adds data from an incoming message to the database
@@ -103,7 +105,6 @@ public class Bot extends TelegramLongPollingBot {
         String[] parts = inText.split(", ");
         stringData = parts[0];
         stringReminder = parts[1];
-        //sendMessage(stringData + " " + stringReminder);
         Timestamp dateSql = getDate(stringData);
         //Create a new record in the database
         Records records = new Records(chatId, dateSql, stringReminder);
@@ -152,6 +153,7 @@ public class Bot extends TelegramLongPollingBot {
         }
     }
 
+    //Method that sends remind messages
     public void sendReminderMessage() throws ParseException {
         List<Records> records = recordsService.findAllByNotifiedIsNull();
         for (Records record : records) {
@@ -164,6 +166,7 @@ public class Bot extends TelegramLongPollingBot {
                 public void run() {
                     long chatId = record.getChatId();
                     String text = record.getText();
+                    Timestamp date = record.getDate();
                     try {
                         SendMessage outMessage = new SendMessage();
                         outMessage.setChatId(chatId);
@@ -172,13 +175,29 @@ public class Bot extends TelegramLongPollingBot {
                     } catch (TelegramApiException e) {
                         e.printStackTrace();
                     }
-
+                    recordsService.updateNotifiedField(chatId, date, text);
                 }
             };
             Timer timer = new Timer();
             timer.schedule(tt, date);
-            record.setNotified("notified");
         }
+    }
+
+    //Method that shows all records of user
+    public void showRecordsOfUser(long chatId){
+        String shows = "Список ваших напоминаний: \n";
+        List<Records> records = recordsService.findAllByNotifiedIsNullAndChatIdIs(chatId);
+        if(records!=null && !records.isEmpty()) {
+            for (Records record : records) {
+                Timestamp dateSqL = record.getDate();
+                DateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+                String dateUser = dateFormatter.format(dateSqL);
+                String textUser = record.getText();
+                shows = shows + "* " + dateUser + ", " + textUser + "\n";
+            }
+            sendMessage(shows);
+        }
+        else {sendMessage("*Список ваших напоминаний пуст*");}
     }
 
 

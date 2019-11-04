@@ -1,6 +1,5 @@
 package com.botreminder.botreminder.database.service;
 
-import com.botreminder.botreminder.core.Bot;
 import com.botreminder.botreminder.database.entity.Records;
 import com.botreminder.botreminder.database.repository.RecordsRepository;
 import org.slf4j.Logger;
@@ -8,7 +7,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -35,5 +33,11 @@ public class RecordsService {
 
     //Method that finds records where field notified is null
     public List<Records> findAllByNotifiedIsNull() { return recordsRepository.findAllByNotifiedIsNull(); }
+
+
+    //Method that finds records where field chatid equals chatid
+    public List<Records> findAllByNotifiedIsNullAndChatIdIs(long chatId) { return recordsRepository.findAllByNotifiedIsNullAndChatIdIs(chatId); }
+
+    public void updateNotifiedField(long chatId, Timestamp date, String text){ recordsRepository.updateNotifiedField(chatId, date, text); }
 
 }

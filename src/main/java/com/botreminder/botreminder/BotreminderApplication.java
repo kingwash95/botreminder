@@ -11,7 +11,6 @@ public class BotreminderApplication {
     public static void main(String[] args) {
         ApiContextInitializer.init();
         SpringApplication.run(BotreminderApplication.class, args);
-
     }
 
 }

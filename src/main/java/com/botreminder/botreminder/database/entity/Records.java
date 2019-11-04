@@ -1,9 +1,7 @@
 package com.botreminder.botreminder.database.entity;
 
 import javax.persistence.*;
-import java.sql.Date;
 import java.sql.Timestamp;
-import java.util.List;
 
 @Entity
 @Table(name = "records")
@@ -32,6 +30,10 @@ public class Records {
         this.date = date;
         this.text = text;
     }
+
+    public Long getId() { return id; }
+
+    public void setId(Long id) { this.id = id; }
 
     public Long getChatId() {
         return chatId;
