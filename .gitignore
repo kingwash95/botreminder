@@ -3,7 +3,7 @@ target/
 *.mvn/*
 !**/src/main/**
 !**/src/test/**
-mvnw.cmd
+*.cmd
 mvnw
 .gitattributes
 ### STS ###
@@ -31,3 +31,8 @@ build/
 
 ### VS Code ###
 .vscode/
+
+
+
+
+
