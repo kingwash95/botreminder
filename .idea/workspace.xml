@@ -104,7 +104,16 @@
       <workItem from="1572792147697" duration="15160000" />
       <workItem from="1572856323753" duration="1429000" />
       <workItem from="1572857902374" duration="2538000" />
+      <workItem from="1572976992731" duration="115000" />
     </task>
+    <task id="LOCAL-00001" summary="updated gitignore">
+      <created>1572977096839</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1572977096839</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -122,5 +131,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="updated gitignore" />
+    <option name="LAST_COMMIT_MESSAGE" value="updated gitignore" />
   </component>
 </project>
