@@ -3,7 +3,6 @@ target/
 /.mvn/*
 !**/src/main/**
 !**/src/test/**
-/mvnw.cmd
 /.mvn
 .gitattributes
 ### STS ###
@@ -35,3 +34,4 @@ build/
 
 
 /.mvn/
+mvnw.cmd
