@@ -3,7 +3,6 @@ target/
 *.mvn/*
 !**/src/main/**
 !**/src/test/**
-*.cmd
 mvnw.cmd
 /.mvn
 .gitattributes
