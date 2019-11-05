@@ -71,8 +71,6 @@
 			<artifactId>telegrambots</artifactId>
 			<version>4.4.0.1</version>
 		</dependency>
-
-
 	</dependencies>
 
 	<build>
