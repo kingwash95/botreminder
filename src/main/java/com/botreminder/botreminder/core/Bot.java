@@ -166,7 +166,7 @@ public class Bot extends TelegramLongPollingBot {
                     try {
                         SendMessage outMessage = new SendMessage();
                         outMessage.setChatId(chatId);
-                        outMessage.setText(stringReminder);
+                        outMessage.setText("Вы просили напомнить:\n" + stringReminder);
                         execute(outMessage);
                     } catch (TelegramApiException e) {
                         e.printStackTrace();
