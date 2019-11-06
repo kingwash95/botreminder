@@ -14,6 +14,8 @@ After that, at the selected date and time, the bot will send the user a reminder
 >An example of how the command `/add` works.
 
 
+
+
 ![](https://sun9-51.userapi.com/c858328/v858328314/d1479/V-8a1C9X8mo.jpg)
 >An example of how the command `/show` works.
 
