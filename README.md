@@ -1,5 +1,6 @@
-# botreminder
-This is a telegram bot that sends user reminders for the time that the user has selected. This bot is still under development, but at the moment it has the function of creating user reminders, entering them into the database and sending a user reminder message to the date and time selected by the user. 
+# Telegram reminder bot
+This bot is designed to send reminders on specific dates and times that the user has previously created. This bot is still under development, but at this stage, it can already be used for its intended purpose.
+
 ### Features
 
 - Сreating user reminders with the command /add. After calling the command, the user needs to enter the date, time and reminder text according to the following pattern: 'dd-mm-yyyy XX: mm, text of the reminder'. 
