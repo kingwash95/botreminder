@@ -14,9 +14,6 @@ public interface RecordsRepository extends JpaRepository<Records, Long> {
     List<Records> findAllByDate(Timestamp date);
 
 
-
-
-
     @Query(value = "select * from records where chatid =?1 and date>current_timestamp", nativeQuery = true)
     List<Records> findRecordsForNotifications(long chatId);
 
